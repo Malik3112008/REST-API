@@ -2,10 +2,106 @@ openapi: 3.0.0
 info:
   title: API Manajemen Sekolah
   version: 1.0.0
-  description: API untuk mengelola guru, kelas, dan siswa.
+  description: API CRUD Lengkap untuk mengelola guru, kelas, siswa, dan mata pelajaran.
+tags:
+  - name: Sistem
+    description: Operasi sistem dan pembersihan data
+  - name: Guru
+    description: Operasi CRUD untuk data Guru
+  - name: Kelas
+    description: Operasi CRUD untuk data Kelas
+  - name: Siswa
+    description: Operasi CRUD untuk data Siswa
+  - name: Mata Pelajaran
+    description: Operasi CRUD untuk data Mata Pelajaran
 paths:
+  /sistem/reset:
+    delete:
+      tags:
+        - Sistem
+      summary: Hapus semua data (Reset Sistem)
+      responses:
+        '200':
+          description: Semua data berhasil dihapus
+
+  /mapel:
+    post:
+      tags:
+        - Mata Pelajaran
+      summary: Buat mata pelajaran baru
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nama:
+                  type: string
+      responses:
+        '201':
+          description: Berhasil dibuat
+    get:
+      tags:
+        - Mata Pelajaran
+      summary: Ambil semua mata pelajaran
+      responses:
+        '200':
+          description: OK
+  /mapel/{id}:
+    get:
+      tags:
+        - Mata Pelajaran
+      summary: Ambil detail mata pelajaran
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - Mata Pelajaran
+      summary: Perbarui mata pelajaran
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nama:
+                  type: string
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Mata Pelajaran
+      summary: Hapus mata pelajaran
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
   /guru:
     post:
+      tags:
+        - Guru
       summary: Buat guru baru
       requestBody:
         required: true
@@ -16,24 +112,64 @@ paths:
       responses:
         '201':
           description: Berhasil dibuat
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Guru'
     get:
+      tags:
+        - Guru
       summary: Ambil semua daftar guru
       responses:
         '200':
           description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Guru'
+  /guru/{id}:
+    get:
+      tags:
+        - Guru
+      summary: Ambil detail guru
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - Guru
+      summary: Perbarui data guru
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuruInput'
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Guru
+      summary: Hapus guru
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
 
   /kelas:
     post:
+      tags:
+        - Kelas
       summary: Buat kelas baru
       requestBody:
         required: true
@@ -44,24 +180,64 @@ paths:
       responses:
         '201':
           description: Berhasil dibuat
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Kelas'
     get:
+      tags:
+        - Kelas
       summary: Ambil semua daftar kelas
       responses:
         '200':
           description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Kelas'
+  /kelas/{id}:
+    get:
+      tags:
+        - Kelas
+      summary: Ambil detail kelas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - Kelas
+      summary: Perbarui data kelas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KelasInput'
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Kelas
+      summary: Hapus kelas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
 
   /siswa:
     post:
+      tags:
+        - Siswa
       summary: Buat siswa baru
       requestBody:
         required: true
@@ -72,21 +248,59 @@ paths:
       responses:
         '201':
           description: Berhasil dibuat
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Siswa'
     get:
+      tags:
+        - Siswa
       summary: Ambil semua daftar siswa
       responses:
         '200':
           description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Siswa'
+  /siswa/{id}:
+    get:
+      tags:
+        - Siswa
+      summary: Ambil detail siswa
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - Siswa
+      summary: Perbarui data siswa
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiswaInput'
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Siswa
+      summary: Hapus siswa
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
 
 components:
   schemas:
@@ -97,25 +311,8 @@ components:
           type: string
         email:
           type: string
-        mata_pelajaran:
-          type: string
-    Guru:
-      type: object
-      properties:
-        id:
+        mata_pelajaran_id:
           type: integer
-        nama:
-          type: string
-        email:
-          type: string
-        mata_pelajaran:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
     KelasInput:
       type: object
       properties:
@@ -123,27 +320,6 @@ components:
           type: string
         guru_id:
           type: integer
-    Kelas:
-      type: object
-      properties:
-        id:
-          type: integer
-        nama:
-          type: string
-        guru_id:
-          type: integer
-        guru:
-          $ref: '#/components/schemas/Guru'
-        siswa:
-          type: array
-          items:
-            $ref: '#/components/schemas/Siswa'
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
     SiswaInput:
       type: object
       properties:
@@ -153,20 +329,3 @@ components:
           type: string
         kelas_id:
           type: integer
-    Siswa:
-      type: object
-      properties:
-        id:
-          type: integer
-        nama:
-          type: string
-        email:
-          type: string
-        kelas_id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time

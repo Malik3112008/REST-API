@@ -36,15 +36,36 @@ func main() {
 		DarkMode: true,
 	}))
 
-	// Endpoints
+	// --- ENDPOINTS SISTEM ---
+	r.DELETE("/sistem/reset", h.HapusSemuaData)
+
+	// --- ENDPOINTS GURU ---
 	r.POST("/guru", h.BuatGuru)
-	r.GET("/guru", h.AmbilGuru)
-	
+	r.GET("/guru", h.AmbilSemuaGuru)
+	r.GET("/guru/:id", h.AmbilGuru)
+	r.PUT("/guru/:id", h.PerbaruiGuru)
+	r.DELETE("/guru/:id", h.HapusGuru)
+
+	// --- ENDPOINTS KELAS ---
 	r.POST("/kelas", h.BuatKelas)
-	r.GET("/kelas", h.AmbilKelas)
-	
+	r.GET("/kelas", h.AmbilSemuaKelas)
+	r.GET("/kelas/:id", h.AmbilKelas)
+	r.PUT("/kelas/:id", h.PerbaruiKelas)
+	r.DELETE("/kelas/:id", h.HapusKelas)
+
+	// --- ENDPOINTS SISWA ---
 	r.POST("/siswa", h.BuatSiswa)
-	r.GET("/siswa", h.AmbilSiswa)
+	r.GET("/siswa", h.AmbilSemuaSiswa)
+	r.GET("/siswa/:id", h.AmbilSiswa)
+	r.PUT("/siswa/:id", h.PerbaruiSiswa)
+	r.DELETE("/siswa/:id", h.HapusSiswa)
+
+	// --- ENDPOINTS MATA PELAJARAN ---
+	r.POST("/mapel", h.BuatMapel)
+	r.GET("/mapel", h.AmbilSemuaMapel)
+	r.GET("/mapel/:id", h.AmbilMapel)
+	r.PUT("/mapel/:id", h.PerbaruiMapel)
+	r.DELETE("/mapel/:id", h.HapusMapel)
 
 	log.Println("Server API Manajemen Sekolah berjalan di :8080")
 	if err := r.Run(":8080"); err != nil {
