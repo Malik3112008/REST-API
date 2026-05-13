@@ -8,30 +8,46 @@ import (
 	"study/internal/usecase"
 
 	"github.com/gin-gonic/gin"
+	"github.com/watchakorn-18k/scalar-go"
+	scalargin "github.com/watchakorn-18k/scalar-go/middleware/gin"
 )
 
 func main() {
-	// Initialize Database
+	// Inisialisasi Database
 	db, err := config.InitDB()
 	if err != nil {
-		log.Fatalf("Could not connect to database: %v", err)
+		log.Fatalf("Tidak dapat terhubung ke database: %v", err)
 	}
 
 	// Dependency Injection
-	repo := repository.NewRentalRepository(db)
-	uc := usecase.NewRentalUsecase(repo)
-	h := handler.NewRentalHandler(uc)
+	repo := repository.NewSekolahRepository(db)
+	uc := usecase.NewSekolahUsecase(repo)
+	h := handler.NewSekolahHandler(uc)
 
-	// Router Setup
+	// Setup Router
 	r := gin.Default()
 
-	// Endpoints
-	r.POST("/vehicles", h.AddVehicle)
-	r.POST("/customers", h.AddCustomer)
-	r.POST("/rentals", h.CreateRental)
+	// Dokumentasi Scalar
+	r.GET("/scalar", scalargin.Handler(&scalar.Options{
+		SpecURL: "./openapi.yaml",
+		CustomOptions: scalar.CustomOptions{
+			PageTitle: "Dokumentasi API Manajemen Sekolah",
+		},
+		DarkMode: true,
+	}))
 
-	log.Println("Rental API server running on :8080")
+	// Endpoints
+	r.POST("/guru", h.BuatGuru)
+	r.GET("/guru", h.AmbilGuru)
+	
+	r.POST("/kelas", h.BuatKelas)
+	r.GET("/kelas", h.AmbilKelas)
+	
+	r.POST("/siswa", h.BuatSiswa)
+	r.GET("/siswa", h.AmbilSiswa)
+
+	log.Println("Server API Manajemen Sekolah berjalan di :8080")
 	if err := r.Run(":8080"); err != nil {
-		log.Fatalf("Failed to start server: %v", err)
+		log.Fatalf("Gagal menjalankan server: %v", err)
 	}
 }

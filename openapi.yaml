@@ -1,0 +1,172 @@
+openapi: 3.0.0
+info:
+  title: API Manajemen Sekolah
+  version: 1.0.0
+  description: API untuk mengelola guru, kelas, dan siswa.
+paths:
+  /guru:
+    post:
+      summary: Buat guru baru
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuruInput'
+      responses:
+        '201':
+          description: Berhasil dibuat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Guru'
+    get:
+      summary: Ambil semua daftar guru
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Guru'
+
+  /kelas:
+    post:
+      summary: Buat kelas baru
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KelasInput'
+      responses:
+        '201':
+          description: Berhasil dibuat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Kelas'
+    get:
+      summary: Ambil semua daftar kelas
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Kelas'
+
+  /siswa:
+    post:
+      summary: Buat siswa baru
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiswaInput'
+      responses:
+        '201':
+          description: Berhasil dibuat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Siswa'
+    get:
+      summary: Ambil semua daftar siswa
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Siswa'
+
+components:
+  schemas:
+    GuruInput:
+      type: object
+      properties:
+        nama:
+          type: string
+        email:
+          type: string
+        mata_pelajaran:
+          type: string
+    Guru:
+      type: object
+      properties:
+        id:
+          type: integer
+        nama:
+          type: string
+        email:
+          type: string
+        mata_pelajaran:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    KelasInput:
+      type: object
+      properties:
+        nama:
+          type: string
+        guru_id:
+          type: integer
+    Kelas:
+      type: object
+      properties:
+        id:
+          type: integer
+        nama:
+          type: string
+        guru_id:
+          type: integer
+        guru:
+          $ref: '#/components/schemas/Guru'
+        siswa:
+          type: array
+          items:
+            $ref: '#/components/schemas/Siswa'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    SiswaInput:
+      type: object
+      properties:
+        nama:
+          type: string
+        email:
+          type: string
+        kelas_id:
+          type: integer
+    Siswa:
+      type: object
+      properties:
+        id:
+          type: integer
+        nama:
+          type: string
+        email:
+          type: string
+        kelas_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time

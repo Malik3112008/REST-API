@@ -12,37 +12,35 @@ import (
 )
 
 func InitDB() (*gorm.DB, error) {
-	// Load .env file
+	// Memuat file .env
 	err := godotenv.Load()
 	if err != nil {
-		log.Println("No .env file found, using environment variables")
+		log.Println("File .env tidak ditemukan, menggunakan variabel lingkungan")
 	}
 
-	// Get database credentials from environment
+	// Mengambil kredensial database dari lingkungan
 	dsn := os.Getenv("DATABASE_URL")
 	if dsn == "" {
-		return nil, fmt.Errorf("DATABASE_URL not set in environment")
+		return nil, fmt.Errorf("DATABASE_URL tidak diatur")
 	}
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		return nil, fmt.Errorf("failed to connect to database: %w", err)
+		return nil, fmt.Errorf("gagal terhubung ke database: %w", err)
 	}
 
-	// Auto Migrate all schemas
-	log.Println("Running database migrations...")
+	// Auto Migrate semua skema
+	log.Println("Menjalankan migrasi database...")
 	err = db.AutoMigrate(
-		&model.Vehicle{},
-		&model.Customer{},
-		&model.Rental{},
-		&model.User{},
-		&model.Project{},
-		&model.Task{},
+		&model.Guru{},
+		&model.Kelas{},
+		&model.Siswa{},
+		&model.MataPelajaran{},
 	)
 	if err != nil {
-		return nil, fmt.Errorf("failed to migrate database: %w", err)
+		return nil, fmt.Errorf("gagal migrasi database: %w", err)
 	}
 
-	log.Println("Database migration completed successfully.")
+	log.Println("Migrasi database selesai dengan sukses.")
 	return db, nil
 }
