@@ -12,13 +12,11 @@ import (
 )
 
 func InitDB() (*gorm.DB, error) {
-	// Memuat file .env
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("File .env tidak ditemukan, menggunakan variabel lingkungan")
 	}
 
-	// Mengambil kredensial database dari lingkungan
 	dsn := os.Getenv("DATABASE_URL")
 	if dsn == "" {
 		return nil, fmt.Errorf("DATABASE_URL tidak diatur")
@@ -29,7 +27,6 @@ func InitDB() (*gorm.DB, error) {
 		return nil, fmt.Errorf("gagal terhubung ke database: %w", err)
 	}
 
-	// Auto Migrate semua skema
 	log.Println("Menjalankan migrasi database...")
 	err = db.AutoMigrate(
 		&model.Guru{},

@@ -7,36 +7,33 @@ import (
 )
 
 type SekolahRepository interface {
-	// Guru
+	
 	TambahGuru(guru *model.Guru) error
 	AmbilSemuaGuru() ([]model.Guru, error)
 	AmbilGuruBerdasarkanID(id uint) (model.Guru, error)
 	PerbaruiGuru(guru *model.Guru) error
 	HapusGuru(id uint) error
 
-	// Kelas
+	
 	TambahKelas(kelas *model.Kelas) error
 	AmbilSemuaKelas() ([]model.Kelas, error)
 	AmbilKelasBerdasarkanID(id uint) (model.Kelas, error)
 	PerbaruiKelas(kelas *model.Kelas) error
 	HapusKelas(id uint) error
 
-	// Siswa
+	
 	TambahSiswa(siswa *model.Siswa) error
 	AmbilSemuaSiswa() ([]model.Siswa, error)
 	AmbilSiswaBerdasarkanID(id uint) (model.Siswa, error)
 	PerbaruiSiswa(siswa *model.Siswa) error
 	HapusSiswa(id uint) error
 
-	// Mata Pelajaran
+	
 	TambahMapel(mapel *model.MataPelajaran) error
 	AmbilSemuaMapel() ([]model.MataPelajaran, error)
 	AmbilMapelBerdasarkanID(id uint) (model.MataPelajaran, error)
 	PerbaruiMapel(mapel *model.MataPelajaran) error
 	HapusMapel(id uint) error
-
-	// Pembersihan
-	HapusSemuaData() error
 }
 
 type sekolahRepository struct {
@@ -47,7 +44,7 @@ func NewSekolahRepository(db *gorm.DB) SekolahRepository {
 	return &sekolahRepository{db}
 }
 
-// --- GURU ---
+
 func (r *sekolahRepository) TambahGuru(guru *model.Guru) error {
 	if err := r.db.Create(guru).Error; err != nil {
 		return err
@@ -85,7 +82,7 @@ func (r *sekolahRepository) HapusGuru(id uint) error {
 	return nil
 }
 
-// --- KELAS ---
+
 func (r *sekolahRepository) TambahKelas(kelas *model.Kelas) error {
 	if err := r.db.Create(kelas).Error; err != nil {
 		return err
@@ -123,7 +120,7 @@ func (r *sekolahRepository) HapusKelas(id uint) error {
 	return nil
 }
 
-// --- SISWA ---
+
 func (r *sekolahRepository) TambahSiswa(siswa *model.Siswa) error {
 	if err := r.db.Create(siswa).Error; err != nil {
 		return err
@@ -161,7 +158,7 @@ func (r *sekolahRepository) HapusSiswa(id uint) error {
 	return nil
 }
 
-// --- MATA PELAJARAN ---
+
 func (r *sekolahRepository) TambahMapel(mapel *model.MataPelajaran) error {
 	return r.db.Create(mapel).Error
 }
@@ -191,8 +188,4 @@ func (r *sekolahRepository) HapusMapel(id uint) error {
 		return errors.New("mata pelajaran tidak ditemukan")
 	}
 	return nil
-}
-
-func (r *sekolahRepository) HapusSemuaData() error {
-	return r.db.Exec("TRUNCATE TABLE siswas, kelas, gurus, mata_pelajarans RESTART IDENTITY CASCADE").Error
 }

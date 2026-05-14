@@ -6,36 +6,33 @@ import (
 )
 
 type SekolahUsecase interface {
-	// Guru
+	
 	SimpanGuru(guru *model.Guru) error
 	DaftarGuru() ([]model.Guru, error)
 	DetailGuru(id uint) (model.Guru, error)
 	UbahGuru(guru *model.Guru) error
 	HapusGuru(id uint) error
 
-	// Kelas
+	
 	SimpanKelas(kelas *model.Kelas) error
 	DaftarKelas() ([]model.Kelas, error)
 	DetailKelas(id uint) (model.Kelas, error)
 	UbahKelas(kelas *model.Kelas) error
 	HapusKelas(id uint) error
 
-	// Siswa
+	
 	SimpanSiswa(siswa *model.Siswa) error
 	DaftarSiswa() ([]model.Siswa, error)
 	DetailSiswa(id uint) (model.Siswa, error)
 	UbahSiswa(siswa *model.Siswa) error
 	HapusSiswa(id uint) error
 
-	// Mata Pelajaran
+	
 	SimpanMapel(mapel *model.MataPelajaran) error
 	DaftarMapel() ([]model.MataPelajaran, error)
 	DetailMapel(id uint) (model.MataPelajaran, error)
 	UbahMapel(mapel *model.MataPelajaran) error
 	HapusMapel(id uint) error
-
-	// Pembersihan
-	BersihkanSemuaData() error
 }
 
 type sekolahUsecase struct {
@@ -46,7 +43,7 @@ func NewSekolahUsecase(repo repository.SekolahRepository) SekolahUsecase {
 	return &sekolahUsecase{repo}
 }
 
-// --- GURU ---
+
 func (u *sekolahUsecase) SimpanGuru(guru *model.Guru) error {
 	return u.repo.TambahGuru(guru)
 }
@@ -67,7 +64,7 @@ func (u *sekolahUsecase) HapusGuru(id uint) error {
 	return u.repo.HapusGuru(id)
 }
 
-// --- KELAS ---
+
 func (u *sekolahUsecase) SimpanKelas(kelas *model.Kelas) error {
 	return u.repo.TambahKelas(kelas)
 }
@@ -88,7 +85,7 @@ func (u *sekolahUsecase) HapusKelas(id uint) error {
 	return u.repo.HapusKelas(id)
 }
 
-// --- SISWA ---
+
 func (u *sekolahUsecase) SimpanSiswa(siswa *model.Siswa) error {
 	return u.repo.TambahSiswa(siswa)
 }
@@ -109,7 +106,7 @@ func (u *sekolahUsecase) HapusSiswa(id uint) error {
 	return u.repo.HapusSiswa(id)
 }
 
-// --- MATA PELAJARAN ---
+
 func (u *sekolahUsecase) SimpanMapel(mapel *model.MataPelajaran) error {
 	return u.repo.TambahMapel(mapel)
 }
@@ -128,8 +125,4 @@ func (u *sekolahUsecase) UbahMapel(mapel *model.MataPelajaran) error {
 
 func (u *sekolahUsecase) HapusMapel(id uint) error {
 	return u.repo.HapusMapel(id)
-}
-
-func (u *sekolahUsecase) BersihkanSemuaData() error {
-	return u.repo.HapusSemuaData()
 }

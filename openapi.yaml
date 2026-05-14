@@ -4,8 +4,6 @@ info:
   version: 1.0.0
   description: API CRUD Lengkap untuk mengelola guru, kelas, siswa, dan mata pelajaran.
 tags:
-  - name: Sistem
-    description: Operasi sistem dan pembersihan data
   - name: Guru
     description: Operasi CRUD untuk data Guru
   - name: Kelas
@@ -15,15 +13,6 @@ tags:
   - name: Mata Pelajaran
     description: Operasi CRUD untuk data Mata Pelajaran
 paths:
-  /sistem/reset:
-    delete:
-      tags:
-        - Sistem
-      summary: Hapus semua data (Reset Sistem)
-      responses:
-        '200':
-          description: Semua data berhasil dihapus
-
   /mapel:
     post:
       tags:

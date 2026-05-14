@@ -13,21 +13,21 @@ import (
 )
 
 func main() {
-	// Inisialisasi Database
 	db, err := config.InitDB()
 	if err != nil {
 		log.Fatalf("Tidak dapat terhubung ke database: %v", err)
 	}
 
-	// Dependency Injection
 	repo := repository.NewSekolahRepository(db)
 	uc := usecase.NewSekolahUsecase(repo)
-	h := handler.NewSekolahHandler(uc)
+	
+	guruH := handler.NewGuruHandler(uc)
+	kelasH := handler.NewKelasHandler(uc)
+	siswaH := handler.NewSiswaHandler(uc)
+	mapelH := handler.NewMapelHandler(uc)
 
-	// Setup Router
 	r := gin.Default()
 
-	// Dokumentasi Scalar
 	r.GET("/scalar", scalargin.Handler(&scalar.Options{
 		SpecURL: "./openapi.yaml",
 		CustomOptions: scalar.CustomOptions{
@@ -36,36 +36,29 @@ func main() {
 		DarkMode: true,
 	}))
 
-	// --- ENDPOINTS SISTEM ---
-	r.DELETE("/sistem/reset", h.HapusSemuaData)
+	r.POST("/guru", guruH.BuatGuru)
+	r.GET("/guru", guruH.AmbilSemuaGuru)
+	r.GET("/guru/:id", guruH.AmbilGuru)
+	r.PUT("/guru/:id", guruH.PerbaruiGuru)
+	r.DELETE("/guru/:id", guruH.HapusGuru)
 
-	// --- ENDPOINTS GURU ---
-	r.POST("/guru", h.BuatGuru)
-	r.GET("/guru", h.AmbilSemuaGuru)
-	r.GET("/guru/:id", h.AmbilGuru)
-	r.PUT("/guru/:id", h.PerbaruiGuru)
-	r.DELETE("/guru/:id", h.HapusGuru)
+	r.POST("/kelas", kelasH.BuatKelas)
+	r.GET("/kelas", kelasH.AmbilSemuaKelas)
+	r.GET("/kelas/:id", kelasH.AmbilKelas)
+	r.PUT("/kelas/:id", kelasH.PerbaruiKelas)
+	r.DELETE("/kelas/:id", kelasH.HapusKelas)
 
-	// --- ENDPOINTS KELAS ---
-	r.POST("/kelas", h.BuatKelas)
-	r.GET("/kelas", h.AmbilSemuaKelas)
-	r.GET("/kelas/:id", h.AmbilKelas)
-	r.PUT("/kelas/:id", h.PerbaruiKelas)
-	r.DELETE("/kelas/:id", h.HapusKelas)
+	r.POST("/siswa", siswaH.BuatSiswa)
+	r.GET("/siswa", siswaH.AmbilSemuaSiswa)
+	r.GET("/siswa/:id", siswaH.AmbilSiswa)
+	r.PUT("/siswa/:id", siswaH.PerbaruiSiswa)
+	r.DELETE("/siswa/:id", siswaH.HapusSiswa)
 
-	// --- ENDPOINTS SISWA ---
-	r.POST("/siswa", h.BuatSiswa)
-	r.GET("/siswa", h.AmbilSemuaSiswa)
-	r.GET("/siswa/:id", h.AmbilSiswa)
-	r.PUT("/siswa/:id", h.PerbaruiSiswa)
-	r.DELETE("/siswa/:id", h.HapusSiswa)
-
-	// --- ENDPOINTS MATA PELAJARAN ---
-	r.POST("/mapel", h.BuatMapel)
-	r.GET("/mapel", h.AmbilSemuaMapel)
-	r.GET("/mapel/:id", h.AmbilMapel)
-	r.PUT("/mapel/:id", h.PerbaruiMapel)
-	r.DELETE("/mapel/:id", h.HapusMapel)
+	r.POST("/mapel", mapelH.BuatMapel)
+	r.GET("/mapel", mapelH.AmbilSemuaMapel)
+	r.GET("/mapel/:id", mapelH.AmbilMapel)
+	r.PUT("/mapel/:id", mapelH.PerbaruiMapel)
+	r.DELETE("/mapel/:id", mapelH.HapusMapel)
 
 	log.Println("Server API Manajemen Sekolah berjalan di :8080")
 	if err := r.Run(":8080"); err != nil {
